@@ -1,41 +1,38 @@
-
-
-
 class Persona:
     def __init__(self, nombre, edad, sexo):
-        self.nombre = nombre
-        self.edad = edad
-        self.sexo = sexo
+        self._nombre = nombre
+        self._edad = edad
+        self._sexo = sexo
     
-    def caminar(self):
+    def _caminar(self):
         print('caminando')
 
     def __str__(self):
-        return f"Nombre: {self.nombre}, Edad: {self.edad}, Sexo: {self.sexo}"
+        return f"Nombre: {self._nombre}, Edad: {self._edad}, Sexo: {self._sexo}"
 
 class Estudiante(Persona):
     def __init__(self, nombre, edad, sexo, carrera):
         super().__init__(nombre, edad, sexo)
-        self.carrera = carrera
+        self._carrera = carrera
 
-    def caminar(self):
+    def _caminar(self):
         print('caminando a la escuela')
 
     def __str__(self):
-        return f"{super().__str__()}, Carrera: {self.carrera}"
+        return f"{super().__str__()}, Carrera: {self._carrera}"
 
 class Trabajador(Persona):
     def __init__(self, nombre, edad, sexo, salario, trabajo, horario):
         super().__init__(nombre, edad, sexo)
-        self.salario = salario
-        self.trabajo = trabajo
-        self.horario = horario
+        self._salario = salario
+        self._trabajo = trabajo
+        self._horario = horario
     
-    def caminar(self):
+    def _caminar(self):
         print('caminando al trabajo')
 
     def __str__(self):
-        return f"{super().__str__()}, Salario: {self.salario}, Trabajo: {self.trabajo}, Horario: {self.horario}"
+        return f"{super().__str__()}, Salario: {self._salario}, Trabajo: {self._trabajo}, Horario: {self._horario}"
 
 # Polimorfismo
 def main():
@@ -46,14 +43,14 @@ def main():
 
     personas = [persona, estudiante, trabajador_1, trabajador_2]
 
-# Ejemplo de polimorfismo
-    persona.caminar()  
+    # Ejemplo de polimorfismo
+    persona._caminar()  
     print(persona)
-    estudiante.caminar()  
+    estudiante._caminar()  
     print(estudiante)
-    trabajador_1.caminar()  
+    trabajador_1._caminar()  
     print(trabajador_1)
-    trabajador_2.caminar()  
+    trabajador_2._caminar()  
     print(trabajador_2)
     print()
 
