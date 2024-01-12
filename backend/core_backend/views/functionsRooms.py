@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import api_view, permission_classes
-from models import Sala
+from core_backend.models import Sala
 from voluptuous.schema_builder import Required
 from backend.utils import validate_data
 
@@ -10,15 +10,12 @@ from backend.utils import validate_data
 @permission_classes([AllowAny])
 def Room(request): 
     rooms = Sala.objects.all()
-    response = []
-    for room in rooms:
-        response.append({'id': room.id,
-        'nombre': room.nombre, 
-        'tamaño': room.tamaño, 
-        'ubicacion': room.ubicacion, 
-        'aforo': room.aforo})
-        return Response(response)
-
+    response = [{'id': room.id,
+                 'nombre': room.nombre, 
+                 'tamaño': room.tamaño, 
+                 'ubicacion': room.ubicacion, 
+                 'aforo': room.aforo} for room in rooms]
+    return Response(response)
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -36,8 +33,7 @@ def create_room(request):
     if 'aforo' not in data:
         data['aforo'] = None
     
-    room = Sala.objects.create(nombre=data['nombre'], tamaño=data['tamaño'], ubicaccion = data['ubicacion'], aforo = data['aforo'])
-    room.save()
+    room = Sala.objects.create(nombre=data['nombre'], tamaño=data['tamaño'], ubicacion=data['ubicacion'], aforo=data['aforo'])
     return Response('Sala creada exitosamente')
 
 @api_view(['PUT'])
@@ -62,7 +58,7 @@ def update_room(request):
             room.aforo = data['aforo']
         room.save()
         return Response('Sala actualizada exitosamente')
-    except:
+    except Sala.DoesNotExist:
         return Response('La sala no existe', status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['DELETE'])
@@ -75,5 +71,5 @@ def delete_room(request):
         room = Sala.objects.get(id=data['id'])
         room.delete()
         return Response('Sala eliminada exitosamente', status=status.HTTP_200_OK)
-    except:
+    except Sala.DoesNotExist:
         return Response('La sala no existe', status=status.HTTP_404_NOT_FOUND)
